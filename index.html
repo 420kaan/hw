@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Kaan App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Games Page</h1>
+    <!-- <script src="script.js" ></script> -->
+    <script async src="script.js"></script>
+    <div id="games"></div>
+    <button onclick="getGames()">Show Games</button>
+    <footer>&copy kaankaraagac 2023.</footer>
+
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Have fun! :)</p>
+        <iframe id="myIframe" height="100%" width="100%"></iframe>
+      </div>
+    </div>
+  </body>
+  <script>
+    async function getGames() {
+      const response = await getScript();
+      console.log(response[0]);
+
+      const gameArray = [];
+
+      response.forEach((item) => {
+        const template = `<div onClick="fillContent('${item.Url}','${item.Height}','${item.Width}')">
+                <span>${item.Title}</span>
+                <img src="${item.Asset[0]}">
+                </div>
+                </br>`;
+
+        gameArray.push(template);
+      });
+
+      document.getElementById("games").innerHTML = gameArray.join('');
+    }
+    function fillContent(src, height, width) {
+      const iframe = document.getElementById("myIframe");
+      const modal = document.getElementById("myModal");
+      modal.style.display = "flex";
+      iframe.src = src;
+      iframe.style.width = width + "px";
+      iframe.style.height = height + "px";
+
+      var span = document.getElementsByClassName("close")[0];
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    }
+  </script>
+</html>
